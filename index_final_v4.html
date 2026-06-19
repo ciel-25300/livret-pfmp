@@ -1,0 +1,1357 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+<title>Livret PFMP – Bac Pro CIEL</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+<style>
+*{box-sizing:border-box;margin:0;padding:0;-webkit-tap-highlight-color:transparent}
+:root{
+  --navy:#1a3a5c;--blue:#2563eb;--lblue:#dbeafe;
+  --bg:#eef2f7;--white:#fff;--text:#1e293b;--muted:#64748b;--border:#cbd5e1;
+  --green:#22c55e;--dgreen:#15803d;--red:#ef4444;--orange:#f97316;--rblue:#3b82f6;
+  --r:14px;--sh:0 2px 12px rgba(0,0,0,.08);
+}
+body{font-family:'Outfit',sans-serif;background:var(--bg);color:var(--text);min-height:100vh;padding-bottom:90px;font-size:15px;}
+
+
+
+/* ── HEADER ── */
+.app-hd{background:var(--navy);color:#fff;position:sticky;top:0;z-index:200;box-shadow:0 3px 16px rgba(0,0,0,.25);}
+.hd-top{display:flex;align-items:center;gap:10px;padding:10px 16px 6px;}
+.hd-logo{flex-shrink:0;display:flex;align-items:center;}
+.hd-info{flex:1;min-width:0;}
+.hd-title{font-size:1rem;font-weight:700;line-height:1.2;}
+.hd-sub{font-size:.68rem;opacity:.55;margin-top:1px;}
+.hd-counter{font-size:.76rem;font-weight:600;background:rgba(255,255,255,.15);padding:4px 10px;border-radius:20px;white-space:nowrap;flex-shrink:0;}
+.prog-wrap{padding:4px 16px 8px;}
+.prog-bar{background:rgba(255,255,255,.2);border-radius:4px;height:4px;}
+.prog-fill{background:#60a5fa;height:100%;border-radius:4px;transition:width .35s ease;}
+.prog-lbl{font-size:.68rem;opacity:.6;margin-top:4px;}
+
+/* ── CONTENT ── */
+.content{max-width:860px;margin:0 auto;padding:16px 14px;}
+.page{display:none;}
+.page.active{display:block;animation:fadeIn .2s ease;}
+@keyframes fadeIn{from{opacity:0;transform:translateY(6px)}to{opacity:1;transform:none}}
+
+/* ── CARDS ── */
+.card{background:var(--white);border-radius:var(--r);box-shadow:var(--sh);padding:18px;margin-bottom:14px;}
+.card-hd{font-size:.95rem;font-weight:700;color:var(--navy);margin-bottom:14px;padding-bottom:10px;border-bottom:2px solid var(--lblue);display:flex;align-items:center;gap:8px;}
+
+/* ── FORMS ── */
+.fg{margin-bottom:14px;}
+label{display:block;font-size:.78rem;font-weight:600;color:var(--muted);margin-bottom:5px;text-transform:uppercase;letter-spacing:.04em;}
+input,select,textarea{width:100%;padding:11px 13px;border:1.5px solid var(--border);border-radius:9px;font-size:.93rem;font-family:'Outfit',sans-serif;color:var(--text);background:#fff;transition:border-color .2s;-webkit-appearance:none;appearance:none;}
+input:focus,select:focus,textarea:focus{outline:none;border-color:var(--blue);}
+textarea{resize:vertical;min-height:90px;line-height:1.5;}
+select{background-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='12' viewBox='0 0 12 12'%3E%3Cpath fill='%2364748b' d='M6 8L1 3h10z'/%3E%3C/svg%3E");background-repeat:no-repeat;background-position:right 12px center;padding-right:36px;}
+.form-row{display:grid;grid-template-columns:1fr 1fr;gap:12px;}
+.pfmp-linked{background:#f0fdf4;border-color:#bbf7d0;}
+
+/* (sélecteur de mode manuel supprimé — détection automatique) */
+
+/* ── ACTIVITY CHIPS ── */
+.act-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(160px,1fr));gap:8px;margin-top:8px;}
+.act-chip{border:2px solid var(--border);border-radius:10px;padding:10px 12px;cursor:pointer;transition:all .15s;background:#fff;user-select:none;display:flex;align-items:flex-start;gap:8px;}
+.act-chip.sel{border-color:var(--blue);background:var(--lblue);}
+.act-chip-icon{font-size:1.3rem;flex-shrink:0;}
+.act-chip-text{font-size:.78rem;font-weight:600;line-height:1.3;color:var(--text);}
+.act-chip.sel .act-chip-text{color:var(--blue);}
+.act-note{margin-top:12px;font-size:.78rem;color:var(--muted);font-weight:600;display:flex;align-items:center;gap:6px;}
+.appr-note{margin-top:10px;font-size:.78rem;color:var(--muted);line-height:1.4;background:var(--bg);border-radius:8px;padding:9px 12px;display:flex;align-items:flex-start;gap:6px;}
+
+/* ── COMP SELECTION ── */
+.comp-grid{flex:1;min-width:0;display:grid;grid-template-columns:repeat(auto-fill,minmax(210px,1fr));gap:8px;}
+.comp-card{border:2px solid var(--border);border-radius:10px;padding:12px;cursor:pointer;transition:all .15s;background:#fff;user-select:none;display:flex;align-items:flex-start;gap:8px;}
+.comp-card.sel{border-color:var(--blue);background:var(--lblue);}
+.cc-check{width:22px;height:22px;border:2px solid var(--border);border-radius:5px;flex-shrink:0;display:flex;align-items:center;justify-content:center;margin-top:2px;font-size:.85rem;transition:all .15s;}
+.comp-card.sel .cc-check{background:var(--blue);border-color:var(--blue);color:#fff;}
+.cc-body{flex:1;min-width:0;}
+.cc-id{font-weight:800;font-size:.95rem;color:var(--navy);}
+.comp-card.sel .cc-id{color:var(--blue);}
+.cc-name{font-size:.73rem;color:var(--muted);margin-top:2px;line-height:1.3;}
+.cc-badge{font-size:.62rem;font-weight:700;padding:2px 7px;border-radius:20px;margin-top:4px;display:inline-block;}
+.cc-badge-sug{background:#dbeafe;color:#1d4ed8;}
+.cc-badge-add{background:#f0fdf4;color:#15803d;}
+.cc-info{flex-shrink:0;width:26px;height:26px;border-radius:50%;background:#f1f5f9;color:var(--muted);display:flex;align-items:center;justify-content:center;font-size:.85rem;font-weight:700;transition:all .15s;}
+.cc-info:hover,.cc-info:focus{background:var(--blue);color:#fff;outline:none;}
+.comp-card.sel .cc-info{background:#fff;color:var(--blue);}
+.comp-hint{background:#fef9c3;border:1px solid #fde68a;border-radius:8px;padding:10px 12px;font-size:.8rem;color:#713f12;margin-bottom:12px;}
+.nav-help-banner{background:#eaf1f8;border:1px solid #bcd4ea;border-radius:8px;padding:10px 12px;font-size:.82rem;color:#1e3a5f;margin-bottom:16px;}
+.nav-help-banner strong{color:var(--navy);}
+
+/* ── ATTITUDE TABLE ── */
+.att-header{display:flex;gap:4px;margin-bottom:6px;margin-left:134px;}
+.att-col-h{flex:1;text-align:center;font-size:.7rem;font-weight:700;color:#fff;padding:5px 4px;border-radius:6px;}
+.att-row{display:flex;align-items:flex-start;gap:4px;margin-bottom:6px;}
+.att-row-lbl{width:130px;min-width:130px;font-size:.8rem;font-weight:600;color:var(--navy);padding-top:12px;line-height:1.3;}
+.att-cell-wrap{flex:1;padding:3px;}
+.att-cell{background:#f8fafc;border:2px solid var(--border);border-radius:9px;padding:9px 8px;font-size:.78rem;text-align:center;cursor:pointer;display:flex;align-items:center;justify-content:center;min-height:58px;line-height:1.3;transition:all .15s;user-select:none;color:var(--text);}
+.att-cell:hover{border-color:#94a3b8;transform:scale(1.02);}
+.att-cell.sel-0{background:#dcfce7;border-color:#16a34a;color:#14532d;font-weight:600;}
+.att-cell.sel-1{background:#fef3c7;border-color:#d97706;color:#78350f;font-weight:600;}
+.att-cell.sel-2{background:#fee2e2;border-color:#dc2626;color:#7f1d1d;font-weight:600;}
+
+/* ── COMPETENCY PAGES ── */
+.comp-hd{padding:14px 16px;border-radius:var(--r) var(--r) 0 0;color:#fff;}
+.comp-hd-code{font-size:1.3rem;font-weight:800;}
+.comp-hd-name{font-size:.82rem;opacity:.85;margin-top:3px;line-height:1.3;}
+.comp-body{background:#fff;border-radius:0 0 var(--r) var(--r);margin-bottom:14px;box-shadow:var(--sh);}
+.legend{display:flex;gap:6px;flex-wrap:wrap;align-items:center;padding:12px 14px 4px;}
+.lgd-lbl{font-size:.72rem;color:var(--muted);font-weight:600;}
+.lgd{display:inline-flex;align-items:center;gap:4px;font-size:.7rem;font-weight:600;}
+.lgd-dot{width:28px;height:20px;border-radius:5px;display:flex;align-items:center;justify-content:center;font-size:.62rem;font-weight:700;color:#fff;}
+
+/* Rating rows */
+.rating-row{display:flex;align-items:center;gap:10px;padding:10px 14px 10px 12px;border-bottom:1px solid #f1f5f9;border-left:5px solid transparent;transition:background .22s,border-color .22s;}
+.rating-row:last-child{border-bottom:none;}
+.rating-row[data-level="0"]{background:#eff6ff;border-left-color:#3b82f6;}
+.rating-row[data-level="1"]{background:#fef2f2;border-left-color:#ef4444;}
+.rating-row[data-level="2"]{background:#fff7ed;border-left-color:#f97316;}
+.rating-row[data-level="3"]{background:#f0fdf4;border-left-color:#22c55e;}
+.rating-row[data-level="4"]{background:#f0fdf4;border-left-color:#15803d;}
+.rating-left{flex:1;min-width:0;}
+.rating-top-row{display:flex;align-items:center;gap:6px;margin-bottom:4px;flex-wrap:wrap;}
+.rating-sc-id{font-size:.66rem;font-weight:700;color:var(--muted);display:inline-block;background:#f1f5f9;padding:2px 7px;border-radius:4px;}
+.rating-lvl-chip{display:inline-flex;align-items:center;gap:3px;padding:2px 9px;border-radius:20px;font-size:.68rem;font-weight:700;color:#fff;animation:chipPop .18s ease;}
+@keyframes chipPop{from{transform:scale(.7);opacity:0}to{transform:scale(1);opacity:1}}
+.rating-text{font-size:.82rem;line-height:1.4;color:var(--text);}
+.rating-btns{display:flex;gap:4px;flex-shrink:0;}
+.rb{width:42px;height:42px;border-radius:8px;border:2.5px solid rgba(255,255,255,.2);cursor:pointer;display:flex;flex-direction:column;align-items:center;justify-content:center;transition:all .15s;user-select:none;color:#fff;line-height:1.1;text-align:center;flex-shrink:0;position:relative;gap:1px;}
+.rb:hover{transform:scale(1.08);}
+.rb.active{border:2.5px solid rgba(255,255,255,.95);transform:scale(1.18);box-shadow:0 0 0 4px rgba(0,0,0,.2),0 2px 8px rgba(0,0,0,.15);}
+.rb.active .rb-check{display:block;}
+.rb.active .rb-abbr{opacity:.9;}
+.rb-check{display:none;font-size:1rem;font-weight:900;line-height:1;}
+.rb-abbr{font-size:.58rem;font-weight:700;opacity:.85;}
+.rb-nn{background:#3b82f6;}.rb-na{background:#ef4444;}.rb-pa{background:#f97316;}.rb-ac{background:#22c55e;}.rb-ta{background:#15803d;}
+.rating-row.missing-warn .rating-sc-id{background:#fee2e2;color:#dc2626;}
+.rating-row.missing-warn .rating-text{color:#7f1d1d;}
+
+/* ── SUMMARY ── */
+.sum-ident{display:grid;grid-template-columns:1fr 1fr;gap:10px;margin-bottom:14px;}
+.sum-item{background:var(--bg);border-radius:8px;padding:10px 12px;}
+.sum-lbl{font-size:.7rem;color:var(--muted);font-weight:600;text-transform:uppercase;letter-spacing:.04em;margin-bottom:3px;}
+.sum-val{font-size:.9rem;font-weight:600;color:var(--navy);}
+.sum-grid{display:grid;grid-template-columns:1fr 1fr;gap:8px;}
+.sum-comp{border-radius:10px;overflow:hidden;box-shadow:var(--sh);}
+.sum-comp-hd{padding:8px 12px;color:#fff;font-weight:700;font-size:.82rem;}
+.sum-comp-body{background:#fff;padding:6px 10px;}
+.sum-sc-row{display:flex;align-items:center;gap:6px;padding:5px 0;border-bottom:1px solid #f1f5f9;font-size:.76rem;}
+.sum-sc-row:last-child{border-bottom:none;}
+.sum-sc-id{font-size:.65rem;font-weight:700;color:var(--muted);background:#f1f5f9;padding:1px 6px;border-radius:4px;white-space:nowrap;}
+.sum-sc-txt{flex:1;min-width:0;overflow:hidden;text-overflow:ellipsis;white-space:nowrap;}
+.chip{padding:3px 8px;border-radius:20px;font-size:.65rem;font-weight:700;color:#fff;white-space:nowrap;flex-shrink:0;}
+.chip-nn{background:#3b82f6;}.chip-na{background:#ef4444;}.chip-pa{background:#f97316;}.chip-ac{background:#22c55e;}.chip-ta{background:#15803d;}.chip-ni{background:#94a3b8;}
+.sum-att-row{display:flex;align-items:center;gap:8px;padding:6px 0;border-bottom:1px solid #f1f5f9;font-size:.8rem;}
+.sum-att-row:last-child{border-bottom:none;}
+.sum-att-lbl{flex:1;}
+.att-chip{padding:3px 9px;border-radius:20px;font-size:.68rem;font-weight:700;}
+.att-chip-0{background:#dcfce7;color:#14532d;}
+.att-chip-1{background:#fef3c7;color:#78350f;}
+.att-chip-2{background:#fee2e2;color:#7f1d1d;}
+.att-chip-x{background:#f1f5f9;color:#64748b;}
+
+/* ── NAV ── */
+.nav-ft{position:fixed;bottom:0;left:0;right:0;background:#fff;border-top:1px solid var(--border);padding:14px 18px;display:flex;align-items:center;justify-content:space-between;gap:10px;box-shadow:0 -4px 16px rgba(0,0,0,.08);z-index:200;}
+.btn{padding:11px 20px;border-radius:10px;font-size:.88rem;font-weight:700;font-family:'Outfit',sans-serif;cursor:pointer;border:none;transition:all .18s;user-select:none;display:inline-flex;align-items:center;gap:6px;}
+.btn-sec{background:#f1f5f9;color:var(--text);}
+.btn-sec:hover{background:var(--border);}
+.btn-pri{background:var(--navy);color:#fff;}
+.btn-pri:hover{background:#0f2a45;}
+#btnPrev,#btnNext{padding:16px 28px;font-size:1.05rem;border-radius:12px;}
+.btn-ok{background:var(--dgreen);color:#fff;}
+.btn-email{background:linear-gradient(135deg,#1a3a5c,#2563eb);color:#fff;}
+
+/* ── FINAL ACTIONS (page récapitulatif) ── */
+.final-actions{margin-top:18px;}
+.final-main{margin-bottom:16px;}
+.btn-final-pri{width:100%;background:linear-gradient(135deg,#15803d,#22c55e);color:#fff;border:none;border-radius:16px;padding:18px 22px;cursor:pointer;display:flex;align-items:center;gap:14px;box-shadow:0 6px 20px rgba(34,197,94,.35);transition:transform .15s,box-shadow .15s;}
+.btn-final-pri:hover{transform:translateY(-2px);box-shadow:0 8px 24px rgba(34,197,94,.45);}
+.bfp-icon{font-size:2rem;flex-shrink:0;}
+.bfp-text{display:flex;flex-direction:column;align-items:flex-start;text-align:left;}
+.bfp-title{font-size:1.05rem;font-weight:800;color:#fff;}
+.bfp-sub{font-size:.78rem;font-weight:500;color:rgba(255,255,255,.9);margin-top:2px;}
+.final-divider{display:flex;align-items:center;text-align:center;margin:14px 0;color:var(--muted);font-size:.72rem;font-weight:600;text-transform:uppercase;letter-spacing:.04em;}
+.final-divider::before,.final-divider::after{content:'';flex:1;border-bottom:1px solid var(--border);}
+.final-divider span{padding:0 10px;}
+.final-alt-grid{display:grid;grid-template-columns:1fr 1fr;gap:12px;}
+.final-alt-card{background:#fff;border-radius:12px;border:1.5px solid var(--border);padding:12px;display:flex;flex-direction:column;gap:8px;}
+.final-alt-card .btn{width:100%;justify-content:center;}
+.final-alt-desc{font-size:.74rem;color:var(--muted);line-height:1.35;text-align:center;}
+@media (max-width:520px){.final-alt-grid{grid-template-columns:1fr;}}
+.nav-mid{text-align:center;font-size:.73rem;color:var(--muted);line-height:1.4;}
+
+/* ── COMP HELP CARD ── */
+.comp-layout{display:flex;gap:18px;align-items:flex-start;}
+.comp-help-card{flex:0 0 280px;margin-top:0;position:sticky;top:90px;background:#fff;border-radius:var(--r);box-shadow:var(--sh);border-left:5px solid var(--blue);padding:14px 16px;min-height:120px;display:flex;align-items:center;}
+.comp-help-inner{display:flex;align-items:flex-start;gap:10px;width:100%;}
+.comp-help-icon{font-size:1.2rem;flex-shrink:0;line-height:1.4;}
+.comp-help-text{font-size:.85rem;line-height:1.5;color:var(--text);}
+.comp-help-text strong{color:var(--navy);font-size:.92rem;}
+.comp-help-text .ch-tag{display:inline-block;font-size:.66rem;font-weight:700;padding:2px 8px;border-radius:20px;margin-left:6px;vertical-align:middle;}
+.comp-help-text .ch-tag-sug{background:#dbeafe;color:#1d4ed8;}
+.comp-help-text .ch-tag-out{background:#f1f5f9;color:#64748b;}
+
+/* ── PAGE TITLES ── */
+.pg-title{font-size:1.15rem;font-weight:800;color:var(--navy);margin-bottom:4px;}
+.pg-sub{font-size:.81rem;color:var(--muted);margin-bottom:16px;line-height:1.4;}
+
+/* ── IO BAR ── */
+.io-bar{background:#fff;border-radius:var(--r);box-shadow:var(--sh);padding:14px 16px;margin-bottom:14px;display:flex;align-items:center;gap:10px;flex-wrap:wrap;}
+.io-bar-lbl{font-size:.8rem;color:var(--muted);font-weight:600;margin-right:4px;}
+.btn-sm{padding:8px 14px;border-radius:8px;font-size:.78rem;font-weight:700;font-family:'Outfit',sans-serif;cursor:pointer;border:none;display:inline-flex;align-items:center;gap:5px;transition:all .15s;}
+.btn-export{background:var(--navy);color:#fff;}
+.btn-import{background:#f0fdf4;color:#15803d;border:1.5px solid #bbf7d0;}
+.btn-reset{background:#fff0f0;color:#dc2626;border:1.5px solid #fecaca;}
+
+/* ── TOAST ── */
+.toast{position:fixed;top:80px;left:50%;transform:translateX(-50%);background:#1e293b;color:#fff;padding:10px 20px;border-radius:30px;font-size:.82rem;font-weight:600;z-index:1000;opacity:0;transition:opacity .3s;pointer-events:none;white-space:nowrap;}
+.toast.show{opacity:1;}
+.autosave-dot{width:8px;height:8px;border-radius:50%;background:#22c55e;display:inline-block;margin-right:4px;}
+
+/* ── MODAL ── */
+.modal-backdrop{position:fixed;inset:0;background:rgba(15,20,40,.55);z-index:900;display:none;align-items:center;justify-content:center;padding:20px;backdrop-filter:blur(3px);}
+.modal-backdrop.open{display:flex;}
+.modal-box{background:#fff;border-radius:18px;max-width:480px;width:100%;box-shadow:0 20px 60px rgba(0,0,0,.25);overflow:hidden;animation:modalIn .22s ease;}
+@keyframes modalIn{from{opacity:0;transform:scale(.94)}to{opacity:1;transform:scale(1)}}
+.modal-stripe{height:6px;width:100%;}
+.modal-body{padding:24px 24px 20px;}
+.modal-icon{font-size:2.2rem;margin-bottom:10px;display:block;}
+.modal-title{font-size:1.1rem;font-weight:800;color:var(--navy);margin-bottom:10px;}
+.modal-msg{font-size:.88rem;color:var(--text);line-height:1.6;white-space:pre-line;}
+.modal-missing{margin-top:12px;background:#fef3c7;border:1.5px solid #fde68a;border-radius:9px;padding:10px 12px;font-size:.8rem;color:#713f12;max-height:140px;overflow-y:auto;}
+.modal-missing li{margin-left:16px;margin-top:3px;}
+.modal-btns{display:flex;gap:10px;padding:0 24px 20px;flex-wrap:wrap;justify-content:flex-end;}
+.modal-btn{padding:11px 20px;border-radius:10px;font-size:.88rem;font-weight:700;font-family:'Outfit',sans-serif;cursor:pointer;border:none;transition:all .15s;}
+.modal-btn-pri{background:var(--navy);color:#fff;}
+.modal-btn-sec{background:#f1f5f9;color:var(--text);}
+.modal-btn-warn{background:#dc2626;color:#fff;}
+
+/* ── EMAIL MODAL ── */
+.email-step{display:flex;gap:14px;margin-bottom:20px;align-items:flex-start;}
+.email-step-num{width:28px;height:28px;background:var(--navy);color:#fff;border-radius:50%;display:flex;align-items:center;justify-content:center;font-weight:800;font-size:.9rem;flex-shrink:0;margin-top:2px;}
+.email-step-body{flex:1;}
+.email-step-title{font-weight:700;font-size:.9rem;color:var(--navy);margin-bottom:3px;}
+.email-step-desc{font-size:.8rem;color:var(--muted);line-height:1.4;}
+.email-step-check{font-size:.78rem;color:#15803d;font-weight:600;margin-top:6px;}
+.email-addr-box{display:flex;align-items:center;gap:8px;background:#f0f9ff;border:1.5px solid #bae6fd;border-radius:9px;padding:10px 12px;margin-top:10px;}
+.email-addr-text{font-size:.9rem;font-weight:700;color:#0369a1;flex:1;word-break:break-all;}
+.email-copy-btn{background:none;border:1.5px solid var(--border);border-radius:7px;padding:5px 8px;cursor:pointer;font-size:.85rem;flex-shrink:0;transition:all .15s;}
+.email-copy-btn:hover{background:var(--lblue);border-color:var(--blue);}
+.email-copy-btn.copied{background:#dcfce7;border-color:#22c55e;}
+.email-subject-box{display:flex;align-items:center;gap:8px;margin-top:8px;background:#fafafa;border:1.5px solid var(--border);border-radius:9px;padding:8px 12px;flex-wrap:wrap;}
+.email-subject-text{font-size:.82rem;font-weight:600;color:var(--text);flex:1;}
+.btn-mailto{background:#1a3a5c;color:#fff;text-decoration:none;}
+
+/* ── TABLET MODE ── */
+body.tablet-mode .rb{width:54px;height:54px;}
+body.tablet-mode .rb-check{font-size:1.15rem;}
+body.tablet-mode .rb-abbr{font-size:.68rem;}
+body.tablet-mode .att-cell{min-height:72px;font-size:.9rem;padding:11px 8px;}
+body.tablet-mode .rating-text{font-size:.92rem;line-height:1.5;}
+body.tablet-mode .rating-row{padding:13px 14px 13px 12px;}
+body.tablet-mode input,body.tablet-mode select{padding:14px 16px;font-size:1rem;}
+body.tablet-mode textarea{font-size:1rem;padding:14px;}
+body.tablet-mode .btn{padding:14px 26px;font-size:1rem;}
+body.tablet-mode .btn-sm{padding:10px 16px;font-size:.85rem;}
+body.tablet-mode .nav-ft{padding:14px 16px;}
+body.tablet-mode .comp-card{padding:14px;}
+body.tablet-mode .act-chip{padding:13px 14px;}
+body.tablet-mode .act-chip-text{font-size:.85rem;}
+body.tablet-mode .att-row-lbl{font-size:.9rem;}
+body.tablet-mode .rating-btns{gap:6px;}
+
+/* ── SECURITY BADGE ── */
+.sec-badge{display:inline-flex;align-items:center;gap:4px;background:#f0fdf4;border:1px solid #bbf7d0;border-radius:20px;padding:3px 9px;font-size:.68rem;font-weight:700;color:#15803d;}
+
+/* ═══════════════════════════════════════════════════════════════
+   RESPONSIVE — adaptation automatique selon le matériel utilisé :
+   PC (16/9 large ou 4/3 plus carré), tablette et smartphone,
+   chacun en portrait ou en paysage. Aucune action de l'utilisateur
+   n'est requise : seules les caractéristiques réelles de l'écran
+   sont utilisées (largeur, hauteur, orientation).
+   ═══════════════════════════════════════════════════════════════ */
+
+/* --- Smartphone, portrait (le cas le plus contraint) --- */
+@media(max-width:600px) and (orientation:portrait){
+  .content{padding:12px 10px;}
+  .form-row{grid-template-columns:1fr;}
+  .sum-ident{grid-template-columns:1fr;}
+  .sum-grid{grid-template-columns:1fr;}
+  .rb{width:36px;height:36px;}
+  .rb-check{font-size:.85rem;}
+  .comp-grid{grid-template-columns:1fr 1fr;}
+  .act-grid{grid-template-columns:1fr 1fr;}
+  .comp-layout{flex-direction:column;}
+  .comp-help-card{flex:1 1 auto;position:static;width:100%;}
+  .att-row{flex-wrap:wrap;}
+  .att-row-lbl{width:100%;min-width:100%;padding-top:4px;padding-bottom:4px;}
+  .att-header{margin-left:0;}
+}
+
+/* --- Smartphone, paysage : très peu de hauteur, largeur correcte --- */
+@media(max-height:480px) and (orientation:landscape){
+  .content{max-width:96%;padding:8px 14px;}
+  .form-row{grid-template-columns:1fr 1fr;}
+  .card{padding:12px;margin-bottom:10px;}
+  .rb{width:34px;height:34px;}
+  .comp-grid{grid-template-columns:1fr 1fr 1fr;}
+  .act-grid{grid-template-columns:1fr 1fr 1fr;}
+  .comp-layout{flex-direction:column;}
+  .comp-help-card{flex:1 1 auto;position:static;width:100%;}
+}
+
+/* --- Tablette, portrait (ex. 4/3 ou similaire, debout) --- */
+@media(min-width:601px) and (max-width:1024px) and (orientation:portrait){
+  .content{max-width:92%;padding:18px 16px;}
+  .form-row{grid-template-columns:1fr 1fr;}
+  .comp-grid{grid-template-columns:1fr 1fr;}
+  .act-grid{grid-template-columns:1fr 1fr;}
+  .comp-layout{flex-direction:column;}
+  .comp-help-card{flex:1 1 auto;position:static;width:100%;}
+}
+
+/* --- Tablette, paysage --- */
+@media(min-width:768px) and (max-width:1366px) and (orientation:landscape){
+  .content{max-width:880px;padding:18px;}
+  .form-row{grid-template-columns:1fr 1fr;}
+  .comp-grid{grid-template-columns:1fr 1fr 1fr;}
+  .act-grid{grid-template-columns:1fr 1fr 1fr;}
+}
+
+/* --- PC / écran large, format 4/3 ou proche du carré (moniteurs anciens, certains laptops) --- */
+@media(min-width:1025px) and (max-aspect-ratio:4/3){
+  .content{max-width:840px;}
+}
+
+/* --- PC / écran large, format 16/9 ou plus large --- */
+@media(min-width:1025px) and (min-aspect-ratio:4/3){
+  .content{max-width:920px;}
+}
+@media print{
+  /* Seul le récapitulatif est imprimé : c'est la synthèse complète et lisible du livret.
+     Les pages de saisie (identification, sélection, attitudes, détail par compétence)
+     ne sont pas pertinentes à l'impression, le récapitulatif en reprend l'intégralité des informations. */
+  .app-hd,.nav-ft,.io-bar,.toast,.modal-backdrop,#emailModal,.final-actions{display:none!important;}
+  .page{display:none!important;}
+  #page-summary{display:block!important;}
+
+  /* Allègement : police système (évite l'intégration de la police web dans le PDF) et suppression des effets coûteux */
+  *{font-family:Arial,Helvetica,sans-serif!important;box-shadow:none!important;text-shadow:none!important;}
+  body{padding-bottom:0;background:#fff!important;font-size:12px;-webkit-print-color-adjust:exact;print-color-adjust:exact;}
+  .card,.comp-body,.sum-comp,.sum-item{box-shadow:none!important;border:1px solid #e2e8f0;}
+
+  /* Empêche toute coupure au milieu d'une carte / d'un tableau de la synthèse */
+  .card,.sum-comp,.sum-ident,.sum-item,.sum-att-row{break-inside:avoid;page-break-inside:avoid;}
+  table,tr{break-inside:avoid;page-break-inside:avoid;}
+}
+</style>
+</head>
+<body>
+
+<!-- TOAST -->
+<div class="toast" id="toast"></div>
+
+<!-- MODAL GÉNÉRIQUE -->
+<div class="modal-backdrop" id="modalBackdrop" onclick="modalBackdropClick(event)">
+  <div class="modal-box">
+    <div class="modal-stripe" id="modalStripe"></div>
+    <div class="modal-body">
+      <span class="modal-icon" id="modalIcon"></span>
+      <div class="modal-title" id="modalTitle"></div>
+      <div class="modal-msg" id="modalMsg"></div>
+      <div class="modal-missing" id="modalMissing" style="display:none"><ul id="modalMissingList"></ul></div>
+    </div>
+    <div class="modal-btns" id="modalBtns"></div>
+  </div>
+</div>
+
+<!-- EMAIL MODAL -->
+<div class="modal-backdrop" id="emailModal" onclick="emailModalBackdrop(event)">
+  <div class="modal-box" style="max-width:520px;">
+    <div class="modal-stripe" style="background:linear-gradient(90deg,#1a3a5c,#2563eb);height:7px;"></div>
+    <div class="modal-body">
+      <span class="modal-icon">✉️</span>
+      <div class="modal-title">Envoyer le livret par email</div>
+      <div class="modal-msg" style="color:var(--muted);font-size:.84rem;margin-bottom:16px;" id="manualSendIntro">Pour finaliser l'envoi de la notation, suivez ces deux étapes :</div>
+
+      <div id="manualSendBlock">
+        <div class="email-step">
+          <div class="email-step-num">1</div>
+          <div class="email-step-body">
+            <div class="email-step-title">Téléchargez le fichier chiffré</div>
+            <div class="email-step-desc">Cliquez ci-dessous pour sauvegarder le livret (.pfmp) sur votre appareil.</div>
+            <button class="btn-sm btn-export" style="margin-top:8px;" onclick="exportPFMP();markStep1()">
+              ⬇ Télécharger  <span id="emailFilename" style="opacity:.65;font-weight:400;font-size:.72rem;"></span>
+            </button>
+            <div class="email-step-check" id="step1check" style="display:none;">✅ Fichier téléchargé</div>
+          </div>
+        </div>
+        <div class="email-step">
+          <div class="email-step-num">2</div>
+          <div class="email-step-body">
+            <div class="email-step-title">Envoyez à l'adresse suivante</div>
+            <div class="email-step-desc">Joignez le fichier .pfmp téléchargé à votre email.</div>
+            <div class="email-addr-box">
+              <span class="email-addr-text" id="emailAddrText">bpciel-carraz@ik.me</span>
+              <button class="email-copy-btn" onclick="copyEmail()" id="copyBtn">📋</button>
+            </div>
+            <div class="email-subject-box">
+              <span style="font-size:.75rem;color:var(--muted);font-weight:600;">Objet :</span>
+              <span class="email-subject-text" id="emailSubject"></span>
+              <button class="email-copy-btn" onclick="copySubject()">📋</button>
+            </div>
+            <a id="mailtoLink" href="#" class="btn-sm btn-mailto" style="margin-top:8px;display:inline-flex;" onclick="openMailto(event)">📧 Ouvrir ma messagerie</a>
+            <div style="font-size:.72rem;color:var(--muted);margin-top:6px;">⚠️ Le fichier .pfmp reste chiffré : seule l'application peut le relire.</div>
+          </div>
+        </div>
+      </div>
+    </div>
+    <div class="modal-btns"><button class="modal-btn modal-btn-sec" onclick="closeEmailModal()">Fermer</button></div>
+  </div>
+</div>
+
+<!-- APP (hidden until unlock) -->
+<div id="app">
+
+<header class="app-hd">
+  <div class="hd-top">
+    <div class="hd-logo"><img src="data:image/png;base64,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" alt="Lycée Roland Carraz" style="height:44px;width:auto;display:block;border-radius:4px;"></div>
+    <div class="hd-info">
+      <div class="hd-title">Livret PFMP – Bac Pro CIEL</div>
+      <div class="hd-sub" id="hdSub">Lycée Roland Carraz · Chenôve</div>
+    </div>
+    <div class="hd-counter" id="hdCounter">1 / 1</div>
+  </div>
+  <div class="prog-wrap">
+    <div class="prog-bar"><div class="prog-fill" id="progFill" style="width:2%"></div></div>
+    <div class="prog-lbl" id="progLbl">Identification</div>
+  </div>
+</header>
+
+<div class="content">
+
+  <!-- PAGE : info -->
+  <div class="page active" id="page-info">
+    <div class="pg-title">📋 Identification</div>
+    <div class="pg-sub">Renseignez les informations du stagiaire, de l'entreprise et choisissez l'activité.</div>
+    <div class="nav-help-banner">
+      <span>↓ En bas de l'écran : <strong>← Retour</strong> pour revenir à l'étape précédente, <strong>Suivant →</strong> pour passer à l'étape suivante.</span>
+    </div>
+
+    <div class="io-bar">
+      <span class="io-bar-lbl">💾 Données :</span>
+      <button class="btn-sm btn-export" onclick="exportPFMP()">⬇ Exporter</button>
+      <button class="btn-sm btn-import" onclick="document.getElementById('importFile').click()">⬆ Importer</button>
+      <input type="file" id="importFile" accept=".pfmp,.json,.txt" style="display:none" onchange="importFile(event)">
+      <button class="btn-sm btn-reset" onclick="resetAll()">🗑 Réinitialiser</button>
+      <span style="margin-left:auto;font-size:.72rem;color:var(--muted);" id="lastSaveLabel"></span>
+    </div>
+
+    <!-- Élève -->
+    <div class="card">
+      <div class="card-hd">🎓 Informations de l'élève</div>
+      <div class="form-row">
+        <div class="fg"><label>Nom</label><input type="text" id="eleveNom" placeholder="DUPONT" oninput="sv('eleveNom',this.value)"></div>
+        <div class="fg"><label>Prénom</label><input type="text" id="elevePrenom" placeholder="Jean" oninput="sv('elevePrenom',this.value)"></div>
+      </div>
+      <div class="form-row">
+        <div class="fg">
+          <label>Classe</label>
+          <select id="eleveClasse" onchange="onClassChange(this.value)">
+            <option value="Seconde CIEL">Seconde CIEL</option>
+            <option value="Première CIEL">Première CIEL</option>
+            <option value="Terminale CIEL">Terminale CIEL</option>
+          </select>
+        </div>
+        <div class="fg">
+          <label>Période <span style="font-size:.68rem;color:#22c55e;font-weight:700;">(auto)</span></label>
+          <select id="elevePfmp" onchange="sv('elevePfmp',this.value)" class="pfmp-linked">
+            <option value="PFMP 1">PFMP 1</option>
+            <option value="PFMP 2">PFMP 2</option>
+            <option value="PFMP 3">PFMP 3</option>
+          </select>
+        </div>
+      </div>
+    </div>
+
+    <!-- Entreprise -->
+    <div class="card">
+      <div class="card-hd">🏢 Informations entreprise</div>
+      <div class="form-row">
+        <div class="fg"><label>Nom de l'entreprise</label><input type="text" id="entNom" placeholder="Entreprise SAS" oninput="sv('entNom',this.value)"></div>
+        <div class="fg"><label>Nom du tuteur / maître de stage</label><input type="text" id="entTuteur" placeholder="Prénom NOM" oninput="sv('entTuteur',this.value)"></div>
+      </div>
+    </div>
+
+    <!-- Activité -->
+    <div class="card">
+      <div class="card-hd">🔧 Propositions d'activités principales de l'entreprise</div>
+      <div class="act-grid" id="actGrid"></div>
+      <div id="autreActWrap" style="display:none;margin-top:12px;">
+        <div class="fg"><label>Préciser l'activité</label><input type="text" id="autreAct" placeholder="Décrivez l'activité…" oninput="sv('autreAct',this.value)"></div>
+      </div>
+      <div class="act-note">➡️ Finalisation de votre sélection avec informations en page suivante.</div>
+    </div>
+  </div>
+
+  <!-- PAGE : select -->
+  <div class="page" id="page-select">
+    <div class="pg-title">✅ Compétences à évaluer</div>
+    <div class="pg-sub">Présélection selon l'activité choisie. Modifiez librement.</div>
+    <div class="comp-hint" id="compHint">💡 Choisissez les compétences à évaluer.</div>
+    <div class="comp-layout">
+      <div class="comp-grid" id="compGrid"></div>
+      <div class="comp-help-card" id="compHelpBar">
+        <div class="comp-help-inner" id="compHelpInner">
+          <span class="comp-help-icon">👉</span>
+          <span class="comp-help-text" id="compHelpText">Survolez ou touchez l'icône ⓘ d'une compétence ci-dessus pour afficher ici son rôle.</span>
+        </div>
+      </div>
+    </div>
+  </div>
+
+
+  <!-- PAGE : attitudes -->
+  <div class="page" id="page-attitudes">
+    <div class="pg-title">🌟 Attitudes professionnelles</div>
+    <div class="pg-sub">Cochez une case par ligne dans chaque tableau.</div>
+    <div class="card">
+      <div class="card-hd">👤 Comportement général</div>
+      <div class="att-header">
+        <div class="att-col-h" style="background:#16a34a;">⬆ Positif</div>
+        <div class="att-col-h" style="background:#d97706;">↔ Moyen</div>
+        <div class="att-col-h" style="background:#dc2626;">⬇ Insuffisant</div>
+      </div>
+      <div id="attGeneral"></div>
+    </div>
+    <div class="card">
+      <div class="card-hd">💼 Comportement professionnel</div>
+      <div class="att-header">
+        <div class="att-col-h" style="background:#16a34a;">⬆ Positif</div>
+        <div class="att-col-h" style="background:#d97706;">↔ Moyen</div>
+        <div class="att-col-h" style="background:#dc2626;">⬇ Insuffisant</div>
+      </div>
+      <div id="attPro"></div>
+    </div>
+    <div class="card">
+      <div class="card-hd">📝 Appréciation générale du tuteur</div>
+      <textarea id="appreciation" placeholder="Rédigez votre appréciation générale sur le stagiaire…" rows="5" oninput="sv('appreciation',this.value)"></textarea>
+      <div class="appr-note">ℹ️ Cette appréciation sera reportée dans le livret de stage de l'élève et pourra être consultée par le jury d'examen pour apprécier la qualité du stage réalisé.</div>
+    </div>
+  </div>
+
+  <!-- PAGES COMPÉTENCES (générées) -->
+  <div id="compPages"></div>
+
+  <!-- PAGE : summary -->
+  <div class="page" id="page-summary">
+    <div class="pg-title">📊 Récapitulatif</div>
+    <div class="pg-sub">Vue synthétique du livret complété.</div>
+    <div id="summaryContent"></div>
+
+    <div class="final-actions">
+      <div class="final-main">
+        <button class="btn-final-pri" onclick="showEmailModal()">
+          <span class="bfp-icon">✉️</span>
+          <span class="bfp-text"><span class="bfp-title">Envoyer la notation par email</span><span class="bfp-sub">Étape obligatoire pour finaliser l'envoi</span></span>
+        </button>
+      </div>
+      <div class="final-divider"><span>autre solution, en option</span></div>
+      <div class="final-alt-grid">
+        <div class="final-alt-card">
+          <button class="btn btn-ok" onclick="printLivret()">🖨 Imprimer / PDF</button>
+          <div class="final-alt-desc">Permet une sauvegarde sous forme lisible et imprimable.</div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+</div><!-- /content -->
+
+<nav class="nav-ft">
+  <button class="btn btn-sec" id="btnPrev" onclick="navigate(-1)" style="visibility:hidden">← Retour</button>
+  <div class="nav-mid" id="navMid"></div>
+  <button class="btn btn-pri" id="btnNext" onclick="navigate(1)">Suivant →</button>
+</nav>
+
+</div><!-- /app -->
+
+<script>
+'use strict';
+
+// ═══════════════════════════
+//  PROTECTION
+// ═══════════════════════════
+// Disable right-click
+document.addEventListener('contextmenu',e=>e.preventDefault());
+// Disable F12 / Ctrl+Shift+I / Ctrl+U
+document.addEventListener('keydown',e=>{
+  if(e.key==='F12'||(e.ctrlKey&&e.shiftKey&&['I','i','J','j','C','c'].includes(e.key))||(e.ctrlKey&&['U','u','S','s'].includes(e.key))){
+    e.preventDefault();e.stopPropagation();return false;
+  }
+});
+// Disable text selection on UI elements (not inputs)
+document.addEventListener('selectstart',e=>{
+  if(!['INPUT','TEXTAREA'].includes(e.target.tagName)) e.preventDefault();
+});
+
+// ═══════════════════════════
+//  CRYPTO (AES-256-GCM + PBKDF2)
+// ═══════════════════════════
+// Key material – obfuscated
+const _K=()=>[80,70,77,80,67,73,69,76,82,111,108,97,110,100,67,97,114,114,97,122,50,48,50,54,33].map(c=>String.fromCharCode(c)).join('');
+
+async function deriveKey(salt){
+  const enc=new TextEncoder();
+  const km=await crypto.subtle.importKey('raw',enc.encode(_K()),{name:'PBKDF2'},false,['deriveKey']);
+  return crypto.subtle.deriveKey(
+    {name:'PBKDF2',salt,iterations:120000,hash:'SHA-256'},
+    km,{name:'AES-GCM',length:256},false,['encrypt','decrypt']
+  );
+}
+
+async function encryptJSON(jsonStr){
+  const salt=crypto.getRandomValues(new Uint8Array(16));
+  const iv=crypto.getRandomValues(new Uint8Array(12));
+  const key=await deriveKey(salt);
+  const enc=new TextEncoder();
+  const cipher=await crypto.subtle.encrypt({name:'AES-GCM',iv},key,enc.encode(jsonStr));
+  const buf=new Uint8Array(salt.byteLength+iv.byteLength+cipher.byteLength);
+  buf.set(salt,0);buf.set(iv,16);buf.set(new Uint8Array(cipher),28);
+  return 'PFMP_SEC_V1:'+btoa(String.fromCharCode(...buf));
+}
+
+async function decryptPFMP(str){
+  if(!str.startsWith('PFMP_SEC_V1:')) throw new Error('Format non reconnu');
+  const b64=str.slice(12);
+  const buf=Uint8Array.from(atob(b64),c=>c.charCodeAt(0));
+  const salt=buf.slice(0,16);
+  const iv=buf.slice(16,28);
+  const data=buf.slice(28);
+  const key=await deriveKey(salt);
+  const plain=await crypto.subtle.decrypt({name:'AES-GCM',iv},key,data);
+  return new TextDecoder().decode(plain);
+}
+
+// ═══════════════════════════
+//  DATA
+// ═══════════════════════════
+const COMP_GEN=[
+  {id:'conscience',critere:"Conscience professionnelle",
+   lv:["Consciencieux, ponctuel, appliqué","Se contente de l'indispensable","Mauvaise volonté, absentéisme"]},
+  {id:'integration',critere:"Intégration dans l'équipe",
+   lv:["Participe activement","Suit le mouvement","Très distant, s'intègre mal"]},
+  {id:'dynamisme',critere:"Dynamisme",
+   lv:["Sait faire ce qu'il faut, quand il le faut","Activité par à-coups, se décourage si la difficulté est importante","Passif, se décourage vite"]},
+  {id:'clarte',critere:"Clarté d'expression / Organisation",
+   lv:["Clair, analyse bien","Convenable, se perd un peu dans les détails","Confus, esprit brouillon"]},
+  {id:'communication',critere:"Communication avec son entourage",
+   lv:["Excellente","Bonne","Insuffisante"]},
+];
+const COMP_PRO=[
+  {id:'efficacite',critere:"Efficacité dans le travail",
+   lv:["Fait bien son travail","Travail quelquefois irrégulier","Aboutit rarement dans ses activités"]},
+  {id:'curiosite',critere:"Curiosité, ouverture d'esprit",
+   lv:["Désire progresser, s'intéresse à ce qu'il voit","A besoin d'être stimulé","Refuse ou reste passif aux sollicitations à découvrir"]},
+  {id:'organisation',critere:"Sens de l'organisation / Méthode / Initiative",
+   lv:["Très autonome, ne demande des conseils qu'à bon escient","A besoin d'un appui dans les phases clé de son travail","Doit être guidé en permanence"]},
+  {id:'comprehension',critere:"Compréhension",
+   lv:["Esprit vif, comprend immédiatement","Fait ce qu'il faut pour comprendre","Comprend difficilement"]},
+  {id:'securite',critere:"Respect des règles de sécurité",
+   lv:["Excellent","Satisfaisant","Insuffisant"]},
+];
+const RATING=[
+  {key:'nn',abbr:'N',  label:'Non noté',      bg:'#3b82f6'},
+  {key:'na',abbr:'NA', label:'Non acquis',     bg:'#ef4444'},
+  {key:'pa',abbr:'PA', label:'Part. acquis',   bg:'#f97316'},
+  {key:'ac',abbr:'AC', label:'Acquis correct', bg:'#22c55e'},
+  {key:'ta',abbr:'TA', label:'Tot. acquis',    bg:'#15803d'},
+];
+const COMPETENCES={
+  C01:{title:"Communiquer en situation professionnelle (Fr/En)",color:"#1d4ed8",
+    desc:"Évalue la capacité de l'élève à s'exprimer clairement à l'oral comme à l'écrit face à un client, un collègue ou sa hiérarchie : qualité des présentations, justesse du vocabulaire technique, adaptation du discours à son interlocuteur. À sélectionner si l'élève a eu des échanges avec des clients, une présentation à faire, ou des comptes-rendus à rédiger.",
+    sc:[
+    {id:"C01a",txt:"La présentation (typographie, orthographe, illustration, lisibilité) est soignée et soutient le discours avec des enchaînements cohérents"},
+    {id:"C01b",txt:"La présentation orale (support et expression) est de qualité et claire"},
+    {id:"C01c",txt:"L'argumentation développée lors de la présentation et de l'échange est de qualité"},
+    {id:"C01d",txt:"L'argumentation tient compte des éventuelles situations de handicap des personnes avec lesquelles il interagit"},
+    {id:"C01e",txt:"Le style, le ton et la terminologie utilisés sont adaptés à la personne et aux circonstances"},
+    {id:"C01f",txt:"L'attitude, les comportements et le langage adoptés sont conformes aux règles de la profession, la réaction est adaptée au contexte"},
+  ]},
+  C03:{title:"Participer à un projet",color:"#7c3aed",
+    desc:"Évalue la capacité de l'élève à s'intégrer dans une démarche de projet collectif : compréhension de son rôle, respect des délais et du planning, persévérance face aux difficultés, utilisation des outils collaboratifs (suivi, partage de fichiers). À sélectionner si l'élève a participé à un projet structuré avec d'autres personnes, même sur une courte durée.",
+    sc:[
+    {id:"C03a",txt:"Les rôles et tâches de chacun sont identifiés ; le cas échéant, les besoins spécifiques des personnes en situation de handicap sont pris en compte"},
+    {id:"C03b",txt:"Le planning prévisionnel est compris"},
+    {id:"C03c",txt:"Le suivi du projet est respecté"},
+    {id:"C03d",txt:"L'espace collaboratif est correctement utilisé"},
+    {id:"C03e",txt:"Face à un ensemble de faits, des actions appropriées à poser sont décidées"},
+    {id:"C03f",txt:"Le calme est conservé de façon constante dans des situations particulières, tout en persévérant dans la tâche jusqu'à l'atteinte du résultat sans se décourager"},
+    {id:"C03g",txt:"Le déroulement des tâches de travail est observé avec attention et de façon soutenue de façon à en contrôler le résultat attendu"},
+  ]},
+  C04:{title:"Analyser une structure matérielle et logicielle",color:"#0891b2",
+    desc:"Évalue la capacité de l'élève à comprendre un système existant avant d'agir : identifier le besoin, utiliser des outils de diagnostic, lire une documentation technique, interpréter des indicateurs de fonctionnement. À sélectionner si l'élève a réalisé des diagnostics, des tests, ou de l'analyse de documentation technique/constructeur.",
+    sc:[
+    {id:"C04a",txt:"Le besoin est identifié ainsi que les ressources matérielles, logicielles et humaines"},
+    {id:"C04b",txt:"Les logiciels d'analyse et de tests sont utilisés selon les procédures de traitement d'incidents"},
+    {id:"C04c",txt:"Les informations nécessaires sont extraites des documents réglementaires et/ou constructeurs"},
+    {id:"C04d",txt:"Les indicateurs de fonctionnement sont interprétés"},
+    {id:"C04e",txt:"Les fiches de test ou d'intervention sont renseignées"},
+    {id:"C04f",txt:"Le travail est préparé de façon à satisfaire les exigences de qualité, d'efficacité et d'échéancier"},
+    {id:"C04g",txt:"Le calme est conservé de façon constante dans des situations particulières, tout en persévérant dans la tâche jusqu'à l'atteinte du résultat sans se décourager"},
+    {id:"C04h",txt:"Les risques d'une situation de travail sont repérés et les mesures appropriées pour sa santé, sa sécurité et celle des autres sont adoptées"},
+  ]},
+  C06:{title:"Valider la conformité d'une installation",color:"#0d9488",
+    desc:"Évalue la capacité de l'élève à vérifier qu'une installation respecte le cahier des charges : exécution de tests, vérification des résultats attendus, respect des procédures de contrôle. À sélectionner si l'élève a eu à tester, contrôler ou valider une installation ou un équipement après intervention.",
+    sc:[
+    {id:"C06a",txt:"Les exigences du cahier des charges sont respectées"},
+    {id:"C06b",txt:"Les tests sont effectués"},
+    {id:"C06c",txt:"Les résultats attendus sont vérifiés"},
+    {id:"C06d",txt:"La procédure de test est respectée"},
+    {id:"C06e",txt:"Le travail est effectué sans vouloir tromper, abuser, léser ou blesser les autres"},
+    {id:"C06f",txt:"Face à un ensemble de faits, des actions appropriées à poser sont décidées"},
+  ]},
+  C07:{title:"Réaliser des maquettes et prototypes",color:"#b45309",
+    desc:"Évalue la capacité de l'élève à fabriquer concrètement une carte électronique : placement et routage, fabrication du circuit imprimé, brasage des composants, contrôle visuel final. À sélectionner uniquement si l'élève a réalisé des travaux pratiques de conception ou fabrication de cartes électroniques (bureau d'études, atelier).",
+    sc:[
+    {id:"C07a",txt:"Le placement et routage sont conformes au cahier des charges"},
+    {id:"C07b",txt:"La génération des fichiers de fabrication du PCB est conforme aux attentes"},
+    {id:"C07c",txt:"Le PCB est réalisé, contrôlé et conforme aux IPC (tolérances mécaniques, finition de surface, propreté, ESD etc.)"},
+    {id:"C07d",txt:"Les composants sont conformes à la nomenclature (marquage, étiquetage)"},
+    {id:"C07e",txt:"La nomenclature des composants est respectée"},
+    {id:"C07f",txt:"Le brasage de la carte est conforme à la nomenclature et aux IPC"},
+    {id:"C07g",txt:"Les contraintes liées aux impacts environnementaux sont intégrées"},
+    {id:"C07h",txt:"Le contrôle visuel de la carte assemblée est conforme au dossier de fabrication"},
+    {id:"C07i",txt:"Les risques d'une situation de travail sont repérés et les mesures appropriées pour sa santé, sa sécurité et celle des autres sont adoptées"},
+    {id:"C07j",txt:"Le travail est effectué selon les attentes exprimées de temps, de quantité ou de qualité dans le respect des contraintes environnementales"},
+    {id:"C07k",txt:"L'effort nécessaire est fourni afin de terminer et de réussir le travail demandé"},
+    {id:"C07l",txt:"Le travail est préparé de façon à satisfaire les exigences de qualité, d'efficacité et d'échéancier"},
+  ]},
+  C08:{title:"Coder",color:"#6d28d9",
+    desc:"Évalue la capacité de l'élève à développer et tester du logiciel : mise en œuvre d'un environnement de développement, débogage, respect des bonnes pratiques, documentation du code. À sélectionner uniquement si l'élève a effectivement écrit, modifié ou testé du code pendant le stage.",
+    sc:[
+    {id:"C08a",txt:"Les environnements de développement et de test sont mis en œuvre en tenant compte des contraintes de fonctionnalités et de sécurité"},
+    {id:"C08b",txt:"Le module logiciel est débogué et syntaxiquement correct"},
+    {id:"C08c",txt:"Les composants logiciels individuels sont développés et testés conformément aux spécifications du cahier des charges et des bonnes pratiques"},
+    {id:"C08d",txt:"La solution (logicielle et matérielle) est intégrée et testée conformément aux spécifications du cahier des charges et des bonnes pratiques"},
+    {id:"C08e",txt:"Le code est commenté et le logiciel est documenté"},
+    {id:"C08f",txt:"Le travail est effectué selon les attentes exprimées de temps, de quantité ou de qualité"},
+    {id:"C08g",txt:"Le travail en équipe est conduit de manière solidaire en contribuant par des idées et des efforts"},
+  ]},
+  C09:{title:"Installer les éléments d'un système électronique ou informatique",color:"#059669",
+    desc:"Évalue la capacité de l'élève à mettre en place un équipement chez un client ou en atelier : vérification du matériel, installation, raccordement, configuration, mise en service, et compte-rendu de l'intervention. À sélectionner si l'élève a posé, raccordé ou configuré du matériel (réseau, téléphonie, électronique).",
+    sc:[
+    {id:"C09a",txt:"L'ensemble des éléments pour l'installation du système est complet et vérifié par rapport au cahier des charges"},
+    {id:"C09b",txt:"Les éléments du système sont installés et raccordés selon une procédure"},
+    {id:"C09c",txt:"La configuration est réalisée"},
+    {id:"C09d",txt:"La mise en service est réalisée"},
+    {id:"C09e",txt:"L'état de l'installation est renseigné de manière écrite ou orale"},
+    {id:"C09f",txt:"Les risques d'une situation de travail sont repérés et les mesures appropriées pour sa santé, sa sécurité et celle des autres sont adoptées"},
+    {id:"C09g",txt:"Le travail est préparé de façon à satisfaire les exigences de qualité, d'efficacité et d'échéancier"},
+    {id:"C09h",txt:"Le travail est effectué selon les attentes exprimées de temps, de quantité ou de qualité"},
+    {id:"C09i",txt:"La résolution d'un problème nouveau imprévu est réussie en utilisant ses propres moyens conformément aux règles de la fonction"},
+    {id:"C09j",txt:"Des tâches diverses dans des domaines et contextes variés sont accomplies"},
+  ]},
+  C10:{title:"Exploiter un réseau informatique",color:"#0369a1",
+    desc:"Évalue la capacité de l'élève à faire fonctionner et entretenir un réseau au quotidien : identification des éléments d'un schéma réseau, mises à jour, optimisations, remontée des incidents. À sélectionner si l'élève a travaillé sur l'administration ou la supervision d'un réseau informatique.",
+    sc:[
+    {id:"C10a",txt:"Les alertes et problèmes rencontrés sont renseignés"},
+    {id:"C10b",txt:"Les différents éléments d'un réseau ou d'un système à partir d'un schéma fourni sont identifiés"},
+    {id:"C10c",txt:"La mise à jour des équipements (iOS, OS, logiciel, firmware) est effectuée"},
+    {id:"C10d",txt:"Les optimisations nécessaires sont effectuées"},
+    {id:"C10e",txt:"Le travail en équipe est conduit de manière solidaire en contribuant par des idées et des efforts"},
+    {id:"C10f",txt:"Le travail est préparé de façon à satisfaire les exigences de qualité, d'efficacité et d'échéancier"},
+  ]},
+  C11:{title:"Maintenir un système électronique ou réseau informatique",color:"#9f1239",
+    desc:"Évalue la capacité de l'élève à intervenir sur un système en panne ou à entretenir : préparation de l'intervention, constat du dysfonctionnement, réparation, rédaction de la fiche d'intervention. À sélectionner si l'élève a réalisé du dépannage, de la maintenance ou du SAV pendant son stage.",
+    sc:[
+    {id:"C11a",txt:"L'intervention est préparée"},
+    {id:"C11b",txt:"Le dysfonctionnement est constaté"},
+    {id:"C11c",txt:"La maintenance ou la réparation est réalisée"},
+    {id:"C11d",txt:"La fiche d'intervention est correctement renseignée"},
+    {id:"C11e",txt:"Les risques d'une situation de travail sont repérés et les mesures appropriées pour sa santé, sa sécurité et celle des autres sont adoptées"},
+    {id:"C11f",txt:"Le déroulement des tâches de travail est observé avec attention et de façon soutenue de façon à en contrôler le résultat attendu"},
+    {id:"C11g",txt:"Des idées, pratiques, ressources inhabituelles sont introduites pour l'avancement de son travail ou de celui des autres"},
+  ]},
+};
+const ALL_COMPS=['C01','C03','C04','C06','C07','C08','C09','C10','C11'];
+const ACTIVITIES=[
+  {key:'telephonie',  icon:'📱',label:'Téléphonie\nVente & SAV',         comps:['C01','C09','C11']},
+  {key:'info_res',    icon:'🌐',label:'Informatique\nRéseaux',            comps:['C01','C09','C10','C11']},
+  {key:'info_sav',    icon:'💻',label:'Informatique\nVente & SAV',        comps:['C01','C09','C10','C11']},
+  {key:'elec_rep',    icon:'🔌',label:'Électronique\nRéparation',         comps:['C01','C04','C06','C09','C11']},
+  {key:'elec_etudes', icon:'📐',label:"Électronique\nBureau d'études",    comps:['C01','C03','C04','C06','C07']},
+  {key:'autre',       icon:'⚙️',label:'Autre activité',                   comps:ALL_COMPS},
+];
+const CLASS_PFMP={'Seconde CIEL':'PFMP 1','Première CIEL':'PFMP 2','Terminale CIEL':'PFMP 3'};
+const DEST_EMAIL='bpciel-carraz@ik.me';
+// L'envoi du fichier de notation se fait en deux étapes manuelles, par choix :
+// 1) téléchargement local du fichier .pfmp chiffré (bouton "Télécharger")
+// 2) envoi par email avec ce fichier en pièce jointe (bouton "Envoyer par email")
+// Cette méthode ne dépend d'aucun service tiers ni d'aucun serveur personnel :
+// elle reste fiable même en cas de panne ou de blocage d'un service externe.
+
+// ═══════════════════════════
+//  STATE
+// ═══════════════════════════
+const LS_KEY='pfmp_ciel_v4';
+function defaultState(){
+  return {
+    eleveNom:'',elevePrenom:'',eleveClasse:'Seconde CIEL',elevePfmp:'PFMP 1',
+    entNom:'',entTuteur:'',activity:'info_res',autreAct:'',
+    selectedComps:[],
+    attGeneral:{},attPro:{},appreciation:'',notations:{},
+    savedAt:null,taWarningShown:false,uiMode:'pc'
+  };
+}
+let S=defaultState();
+function loadState(){
+  try{
+    const raw=localStorage.getItem(LS_KEY);
+    if(raw){const d=JSON.parse(raw);S={...defaultState(),...d};if(!Array.isArray(S.selectedComps))S.selectedComps=[];}
+  }catch(e){S=defaultState();}
+}
+function persist(){
+  S.savedAt=new Date().toISOString();
+  try{localStorage.setItem(LS_KEY,JSON.stringify(S));}catch(e){}
+  updateSaveLabel();
+}
+function sv(key,val){S[key]=val;persist();}
+function updateSaveLabel(){
+  const el=document.getElementById('lastSaveLabel');
+  if(!el||!S.savedAt)return;
+  const d=new Date(S.savedAt);
+  el.innerHTML='<span class="autosave-dot"></span>Sauvegardé '+d.toLocaleTimeString('fr-FR',{hour:'2-digit',minute:'2-digit'});
+}
+
+
+
+// ═══════════════════════════
+//  ROUTING
+// ═══════════════════════════
+let curPage=0;
+function getPages(){
+  const p=['info','select','attitudes'];
+  for(const c of ALL_COMPS){if(S.selectedComps.includes(c))p.push(c);}
+  p.push('summary');
+  return p;
+}
+function navigate(dir){
+  const pages=getPages();
+  const cid=pages[curPage];
+  if(dir>0&&COMPETENCES[cid]){
+    const c=COMPETENCES[cid];
+    const not=S.notations[cid]||{};
+    const missing=c.sc.filter(sc=>not[sc.id]==null);
+    if(missing.length>0){
+      c.sc.forEach(sc=>{
+        const row=document.getElementById('rr-'+sc.id);
+        if(row)row.classList.toggle('missing-warn',not[sc.id]==null);
+      });
+      showModal({icon:'⚠️',stripeColor:'#f97316',title:'Sous-compétences non évaluées',
+        msg:missing.length+' sous-compétence(s) de '+cid+' n\'ont pas encore reçu de note.\n\nSi une sous-compétence n\'a pas pu être observée pendant le stage, utilisez la case bleue « Non noté » plutôt que de la laisser vide.',
+        missing:missing.map(sc=>sc.id+' – '+sc.txt.substring(0,70)+'…'),
+        buttons:[
+          {label:"Compléter l'évaluation",style:'modal-btn-pri',action:'closeModal()'},
+        ]});
+      return;
+    }
+  }
+  if(dir>0&&cid==='attitudes'){
+    const ok=COMP_GEN.every(r=>S.attGeneral?.[r.id]!=null)&&COMP_PRO.every(r=>S.attPro?.[r.id]!=null);
+    if(!ok){
+      showModal({icon:'⚠️',stripeColor:'#f97316',title:'Lignes non cochées',
+        msg:'Certaines lignes des tableaux d\'attitudes n\'ont pas de case cochée.\n\nToutes les lignes doivent obligatoirement être évaluées.',
+        buttons:[
+          {label:'Compléter les tableaux',style:'modal-btn-pri',action:'closeModal()'},
+        ]});
+      return;
+    }
+    if(!S.appreciation||!S.appreciation.trim()){
+      showModal({icon:'📝',stripeColor:'#f97316',title:'Appréciation manquante',
+        msg:'L\'appréciation générale est obligatoire avant de continuer.\n\nElle sera reportée dans le livret de stage de l\'élève et pourra être consultée par le jury d\'examen.',
+        buttons:[
+          {label:"Rédiger l'appréciation",style:'modal-btn-pri',action:'closeModal()'},
+        ]});
+      return;
+    }
+  }
+  doNavigate(dir);
+}
+function doNavigate(dir){
+  const pages=getPages();
+  curPage=Math.max(0,Math.min(pages.length-1,curPage+dir));
+  showPage(pages[curPage],pages);
+}
+function goToPage(n){
+  const pages=getPages();
+  curPage=Math.max(0,Math.min(pages.length-1,n));
+  showPage(pages[curPage],pages);
+}
+function showPage(pageId,pages){
+  document.querySelectorAll('.page').forEach(p=>p.classList.remove('active'));
+  let el=document.getElementById('page-'+pageId);
+  if(!el)el=document.getElementById('comp-page-'+pageId);
+  if(el)el.classList.add('active');
+  window.scrollTo({top:0,behavior:'smooth'});
+  updateHeader(pages);
+  if(pageId==='select')refreshCompSelect();
+  if(pageId==='attitudes')refreshAttitudes();
+  if(pageId==='summary')renderSummary();
+  restoreFields();
+  updateSaveLabel();
+}
+function updateHeader(pages){
+  const idx=curPage,total=pages.length;
+  const pct=total>1?Math.round((idx/(total-1))*100):2;
+  document.getElementById('progFill').style.width=Math.max(2,pct)+'%';
+  document.getElementById('hdCounter').textContent=(idx+1)+' / '+total;
+  const labels={info:'Identification',select:'Sélection des compétences',attitudes:'Attitudes professionnelles',summary:'Récapitulatif'};
+  const pid=pages[idx];
+  document.getElementById('progLbl').textContent=labels[pid]||(pid+' – '+(COMPETENCES[pid]?.title||pid));
+  const elev=(S.elevePrenom||'')+(S.eleveNom?' '+S.eleveNom:'');
+  document.getElementById('hdSub').textContent=elev||'Bac Pro CIEL – Lycée Roland Carraz';
+  document.getElementById('btnPrev').style.visibility=idx===0?'hidden':'visible';
+  const nb=document.getElementById('btnNext');
+  if(idx===total-1){nb.style.display='none';}
+  else{nb.style.display='inline-flex';nb.textContent=idx===total-2?'Terminer ✓':'Suivant →';}
+  document.getElementById('navMid').textContent=(idx+1)+' / '+total;
+}
+
+// ═══════════════════════════
+//  DÉTECTION AUTOMATIQUE DU MODE D'AFFICHAGE
+// ═══════════════════════════
+// Plus de choix manuel PC/Tablette : l'app détecte elle-même les
+// caractéristiques réelles de l'écran (taille + présence tactile + orientation)
+// et adapte l'interface en conséquence, sur PC, tablette ou smartphone,
+// en portrait comme en paysage.
+function applyAutoMode(){
+  const w=window.innerWidth;
+  const hasTouch=('ontouchstart' in window)||navigator.maxTouchPoints>0;
+  // Cibles tactiles agrandies : écran tactile ET largeur "tablette/mobile" (<=1024px).
+  // Un PC tactile large (ex. écran tactile 16/9 de bureau) reste en mode standard.
+  const useTabletUI=hasTouch&&w<=1024;
+  document.body.classList.toggle('tablet-mode',useTabletUI);
+  S.uiMode=useTabletUI?'tablet':'pc';
+}
+window.addEventListener('resize',applyAutoMode);
+window.addEventListener('orientationchange',applyAutoMode);
+
+// ═══════════════════════════
+//  ACTIVITY GRID
+// ═══════════════════════════
+function refreshActivities(){
+  document.getElementById('actGrid').innerHTML=ACTIVITIES.map(a=>
+    `<div class="act-chip ${S.activity===a.key?'sel':''}" onclick="selectActivity('${a.key}')">
+      <span class="act-chip-icon">${a.icon}</span>
+      <span class="act-chip-text">${a.label.replace('\n','<br>')}</span>
+    </div>`).join('');
+  document.getElementById('autreActWrap').style.display=S.activity==='autre'?'block':'none';
+}
+function selectActivity(key){
+  S.activity=key;
+  const act=ACTIVITIES.find(a=>a.key===key);
+  if(act)S.selectedComps=[...act.comps];
+  persist();refreshActivities();buildCompPages();
+}
+
+// ═══════════════════════════
+//  COMP SELECTION
+// ═══════════════════════════
+function refreshCompSelect(){
+  const act=ACTIVITIES.find(a=>a.key===S.activity);
+  const suggested=act?.comps||[];
+  document.getElementById('compHint').innerHTML=
+    '💡 <strong>Activité « '+(act?.label||'?').replace('\n',' ')+'&nbsp;»</strong> : les compétences <span style="color:#1d4ed8;font-weight:700;">bleues</span> sont pré-sélectionnées. Modifiez librement.<br>👉 Survolez ou touchez l\'icône <strong>ⓘ</strong> d\'une compétence pour afficher son rôle ci-dessous.';
+  document.getElementById('compGrid').innerHTML=ALL_COMPS.map(code=>{
+    const c=COMPETENCES[code];
+    const sel=S.selectedComps.includes(code);
+    const isSug=suggested.includes(code);
+    const badge=sel&&isSug?'<span class="cc-badge cc-badge-sug">✦ Recommandée</span>':
+                sel&&!isSug?'<span class="cc-badge cc-badge-add">+ Ajoutée</span>':'';
+    return `<div class="comp-card ${sel?'sel':''}" onclick="toggleComp('${code}')">
+      <div class="cc-check">${sel?'✓':''}</div>
+      <div class="cc-body"><div class="cc-id">${code}</div><div class="cc-name">${c.title}</div>${badge}</div>
+      <div class="cc-info" tabindex="0"
+        onmouseenter="showCompHelp('${code}')" onfocus="showCompHelp('${code}')"
+        onclick="event.stopPropagation();showCompHelp('${code}')">ⓘ</div>
+    </div>`;
+  }).join('');
+}
+function showCompHelp(code){
+  const c=COMPETENCES[code];if(!c)return;
+  const act=ACTIVITIES.find(a=>a.key===S.activity);
+  const suggested=act?.comps||[];
+  const tag=suggested.includes(code)
+    ?'<span class="ch-tag ch-tag-sug">✦ Recommandée pour cette activité</span>'
+    :'<span class="ch-tag ch-tag-out">Hors activité déclarée</span>';
+  document.getElementById('compHelpText').innerHTML=
+    '<strong>'+code+' – '+c.title+'</strong>'+tag+'<br>'+(c.desc||'');
+}
+function toggleComp(code){
+  const idx=S.selectedComps.indexOf(code);
+  if(idx>-1)S.selectedComps.splice(idx,1);else S.selectedComps.push(code);
+  persist();buildCompPages();refreshCompSelect();
+  showCompHelp(code);
+}
+
+// ═══════════════════════════
+//  ATTITUDES
+// ═══════════════════════════
+function refreshAttitudes(){
+  renderAttBlock('attGeneral',COMP_GEN,'attGeneral');
+  renderAttBlock('attPro',COMP_PRO,'attPro');
+  const ta=document.getElementById('appreciation');
+  if(ta)ta.value=S.appreciation||'';
+}
+function renderAttBlock(containerId,rows,stateKey){
+  const el=document.getElementById(containerId);if(!el)return;
+  el.innerHTML=rows.map(row=>{
+    const cur=S[stateKey]?.[row.id];
+    return `<div class="att-row">
+      <div class="att-row-lbl">${row.critere}</div>
+      ${row.lv.map((txt,i)=>`<div class="att-cell-wrap"><div class="att-cell ${cur===i?'sel-'+i:''}" onclick="selectAtt('${stateKey}','${row.id}',${i})">${txt}</div></div>`).join('')}
+    </div>`;
+  }).join('');
+}
+function selectAtt(stateKey,rowId,level){
+  if(!S[stateKey])S[stateKey]={};
+  S[stateKey][rowId]=level;persist();
+  renderAttBlock(stateKey,stateKey==='attGeneral'?COMP_GEN:COMP_PRO,stateKey);
+}
+
+// ═══════════════════════════
+//  COMP PAGES
+// ═══════════════════════════
+function buildCompPages(){
+  const container=document.getElementById('compPages');container.innerHTML='';
+  for(const code of ALL_COMPS){
+    const c=COMPETENCES[code];
+    const div=document.createElement('div');
+    div.className='page';div.id='comp-page-'+code;
+    const legend=RATING.map(r=>`<span class="lgd"><span class="lgd-dot" style="background:${r.bg}">${r.abbr}</span>${r.label}</span>`).join('');
+    const rows=c.sc.map(sc=>{
+      const cur=(S.notations[code]||{})[sc.id];
+      const chipHtml=cur!=null?`<span class="rating-lvl-chip" style="background:${RATING[cur].bg}">✓ ${RATING[cur].abbr} – ${RATING[cur].label}</span>`:'';
+      const btns=RATING.map((r,i)=>
+        `<div class="rb rb-${r.key} ${cur===i?'active':''}" onclick="rateComp('${code}','${sc.id}',${i})" title="${r.label}">
+          <span class="rb-check">✓</span><span class="rb-abbr">${r.abbr}</span>
+        </div>`).join('');
+      const dl=cur!=null?`data-level="${cur}"`:'';
+      return `<div class="rating-row" id="rr-${sc.id}" ${dl}>
+        <div class="rating-left">
+          <div class="rating-top-row"><span class="rating-sc-id">${sc.id}</span>${chipHtml}</div>
+          <div class="rating-text">${sc.txt}</div>
+        </div>
+        <div class="rating-btns">${btns}</div>
+      </div>`;
+    }).join('');
+    div.innerHTML=`
+      <div class="comp-hd" style="background:${c.color}">
+        <div class="comp-hd-code">${code}</div>
+        <div class="comp-hd-name">${c.title}</div>
+      </div>
+      <div class="comp-body">
+        <div class="legend"><span class="lgd-lbl">Niveaux :</span>${legend}</div>
+        ${rows}
+        <div style="height:8px"></div>
+      </div>`;
+    container.appendChild(div);
+  }
+}
+function rateComp(code,scId,level){
+  if(!S.notations[code])S.notations[code]={};
+  S.notations[code][scId]=level;persist();
+  const c=COMPETENCES[code];
+  const sc=c.sc.find(s=>s.id===scId);if(!sc)return;
+  const row=document.getElementById('rr-'+scId);if(!row)return;
+  row.dataset.level=level;
+  const top=row.querySelector('.rating-top-row');
+  if(top){const old=top.querySelector('.rating-lvl-chip');if(old)old.remove();
+    const chip=document.createElement('span');
+    chip.className='rating-lvl-chip';chip.style.background=RATING[level].bg;
+    chip.textContent='✓ '+RATING[level].abbr+' – '+RATING[level].label;
+    top.appendChild(chip);}
+  row.querySelector('.rating-btns').innerHTML=RATING.map((r,i)=>
+    `<div class="rb rb-${r.key} ${i===level?'active':''}" onclick="rateComp('${code}','${sc.id}',${i})" title="${r.label}">
+      <span class="rb-check">✓</span><span class="rb-abbr">${r.abbr}</span>
+    </div>`).join('');
+  row.classList.remove('missing-warn');
+  checkAllTA();
+}
+
+// ═══════════════════════════
+//  SUMMARY
+// ═══════════════════════════
+function renderSummary(){
+  const el=document.getElementById('summaryContent');
+  const act=ACTIVITIES.find(a=>a.key===S.activity);
+  const attLevels=['Positif ✅','Moyen ⚠️','Insuffisant ❌'];
+  let html=`<div class="card">
+    <div class="card-hd">📋 Identification</div>
+    <div class="sum-ident">
+      <div class="sum-item"><div class="sum-lbl">Élève</div><div class="sum-val">${esc(S.elevePrenom)} ${esc(S.eleveNom)}</div></div>
+      <div class="sum-item"><div class="sum-lbl">Classe</div><div class="sum-val">${esc(S.eleveClasse)}</div></div>
+      <div class="sum-item"><div class="sum-lbl">Période</div><div class="sum-val">${esc(S.elevePfmp)}</div></div>
+      <div class="sum-item"><div class="sum-lbl">Entreprise</div><div class="sum-val">${esc(S.entNom)||'—'}</div></div>
+      <div class="sum-item"><div class="sum-lbl">Tuteur</div><div class="sum-val">${esc(S.entTuteur)||'—'}</div></div>
+      <div class="sum-item"><div class="sum-lbl">Activité</div><div class="sum-val">${(act?.label||'—').replace('\n',' ')}</div></div>
+    </div>
+  </div>`;
+  const makeAttRows=(rows,sk)=>rows.map(r=>{
+    const v=S[sk]?.[r.id];
+    return `<div class="sum-att-row"><div class="sum-att-lbl">${r.critere}</div>
+      ${v!=null?`<span class="att-chip att-chip-${v}">${attLevels[v]}</span>`:'<span class="att-chip att-chip-x">Non coché</span>'}
+    </div>`;}).join('');
+  html+=`<div class="card">
+    <div class="card-hd">🌟 Attitudes professionnelles</div>
+    <div style="font-size:.78rem;font-weight:700;color:var(--muted);text-transform:uppercase;letter-spacing:.05em;margin-bottom:8px;">Comportement général</div>
+    ${makeAttRows(COMP_GEN,'attGeneral')}
+    <div style="font-size:.78rem;font-weight:700;color:var(--muted);text-transform:uppercase;letter-spacing:.05em;margin:14px 0 8px;">Comportement professionnel</div>
+    ${makeAttRows(COMP_PRO,'attPro')}
+    ${S.appreciation?`<div style="margin-top:12px;padding:12px;background:var(--bg);border-radius:8px;font-size:.82rem;line-height:1.5;"><strong>Appréciation :</strong> ${esc(S.appreciation)}</div>`:''}
+  </div>`;
+  const cm={0:'chip-nn',1:'chip-na',2:'chip-pa',3:'chip-ac',4:'chip-ta'};
+  const ab=RATING.map(r=>r.abbr);
+  html+='<div class="sum-grid">';
+  for(const code of ALL_COMPS){
+    if(!S.selectedComps.includes(code))continue;
+    const c=COMPETENCES[code];const not=S.notations[code]||{};
+    const scRows=c.sc.map(sc=>{const v=not[sc.id];
+      return `<div class="sum-sc-row">
+        <span class="sum-sc-id">${sc.id}</span>
+        <span class="sum-sc-txt" title="${sc.txt}">${sc.txt}</span>
+        ${v!=null?`<span class="chip ${cm[v]}">${ab[v]}</span>`:'<span class="chip chip-ni">—</span>'}
+      </div>`;}).join('');
+    html+=`<div class="sum-comp"><div class="sum-comp-hd" style="background:${c.color}">${code} – ${c.title}</div><div class="sum-comp-body">${scRows}</div></div>`;
+  }
+  html+='</div>';
+  el.innerHTML=html;
+}
+
+// ═══════════════════════════
+//  RESTORE FIELDS
+// ═══════════════════════════
+function restoreFields(){
+  [['eleveNom','eleveNom'],['elevePrenom','elevePrenom'],['eleveClasse','eleveClasse'],
+   ['elevePfmp','elevePfmp'],['entNom','entNom'],['entTuteur','entTuteur'],['autreAct','autreAct']].forEach(([id,key])=>{
+    const el=document.getElementById(id);if(el&&S[key]!=null)el.value=S[key];
+  });
+  const ta=document.getElementById('appreciation');if(ta)ta.value=S.appreciation||'';
+}
+
+// ═══════════════════════════
+//  FILENAME + PRINT
+// ═══════════════════════════
+function makeFilename(ext){
+  const nom=(S.eleveNom||'ELEVE').toUpperCase().replace(/\s+/g,'-').replace(/[^A-Z0-9\-]/g,'');
+  const prenom=(S.elevePrenom||'Prenom').replace(/\s+/g,'-').replace(/[^a-zA-ZÀ-ÿ\-]/g,'');
+  const pfmp=(S.elevePfmp||'PFMP1').replace(/\s+/g,'');
+  return `${nom}-${prenom}-${pfmp}.${ext}`;
+}
+function printLivret(){
+  const prev=document.title;
+  document.title=makeFilename('pdf').replace('.pdf','');
+  window.print();
+  setTimeout(()=>{document.title=prev;},2000);
+}
+
+// ═══════════════════════════
+//  EXPORT (encrypted .pfmp)
+// ═══════════════════════════
+
+async function exportPFMP(){
+  let filename='';
+  try{
+    const json=JSON.stringify(S,null,2);
+    const enc=await encryptJSON(json);
+    filename=makeFilename('pfmp');
+    const blob=new Blob([enc],{type:'application/octet-stream'});
+    const url=URL.createObjectURL(blob);
+    const a=document.createElement('a');
+    a.href=url;a.download=filename;
+    document.body.appendChild(a);a.click();
+    document.body.removeChild(a);URL.revokeObjectURL(url);
+  }catch(e){
+    toast('❌ Erreur export : '+e.message);
+    return;
+  }
+  toast('✅ Fichier téléchargé : '+filename+' — passez maintenant à l\'étape 2 (Envoyer par email)',5000);
+}
+
+// ═══════════════════════════
+//  IMPORT (.pfmp chiffré ou .json plain)
+// ═══════════════════════════
+async function importFile(evt){
+  const file=evt.target.files[0];if(!file)return;
+  const reader=new FileReader();
+  reader.onload=async function(e){
+    try{
+      let raw=e.target.result;
+      if(raw.startsWith('PFMP_SEC_V1:')){
+        toast('🔓 Déchiffrement…');
+        raw=await decryptPFMP(raw);
+      }
+      const d=JSON.parse(raw);
+      if(!d.eleveNom&&!d.entNom&&!d.selectedComps)throw new Error('Données invalides');
+      S={...defaultState(),...d};
+      if(!Array.isArray(S.selectedComps))S.selectedComps=[];
+      persist();refreshActivities();buildCompPages();
+      applyAutoMode();
+      goToPage(0);
+      toast('✅ Livret importé avec succès',3000);
+    }catch(err){
+      toast('❌ Erreur : '+err.message,4000);
+    }
+    evt.target.value='';
+  };
+  reader.readAsText(file);
+}
+
+// ═══════════════════════════
+//  RESET
+// ═══════════════════════════
+function resetAll(){
+  if(!confirm('Réinitialiser TOUTES les données ?\nCette action est irréversible.'))return;
+  localStorage.removeItem(LS_KEY);S=defaultState();persist();
+  applyAutoMode();
+  refreshActivities();buildCompPages();goToPage(0);
+  toast('🗑 Données réinitialisées');
+}
+
+// ═══════════════════════════
+//  TOAST
+// ═══════════════════════════
+let toastTimer=null;
+function toast(msg,dur=2800){
+  const t=document.getElementById('toast');
+  t.textContent=msg;t.classList.add('show');
+  clearTimeout(toastTimer);
+  toastTimer=setTimeout(()=>t.classList.remove('show'),dur);
+}
+
+// ═══════════════════════════
+//  AUTO-SAVE (5 min)
+// ═══════════════════════════
+setInterval(()=>{persist();toast('💾 Sauvegarde automatique',2000);},5*60*1000);
+
+// ═══════════════════════════
+//  CLASS ↔ PFMP
+// ═══════════════════════════
+function onClassChange(val){
+  S.eleveClasse=val;
+  const pfmp=CLASS_PFMP[val];
+  if(pfmp){S.elevePfmp=pfmp;const sel=document.getElementById('elevePfmp');if(sel)sel.value=pfmp;}
+  persist();
+}
+
+// ═══════════════════════════
+//  ALL-TA CHECK
+// ═══════════════════════════
+function checkAllTA(){
+  if(S.taWarningShown||S.selectedComps.length===0)return;
+  let allTA=true;
+  for(const code of S.selectedComps){
+    const c=COMPETENCES[code];if(!c)continue;
+    const not=S.notations[code]||{};
+    if(c.sc.some(sc=>not[sc.id]!==4)){allTA=false;break;}
+  }
+  if(allTA){
+    S.taWarningShown=true;persist();
+    showModal({icon:'🎓',stripeColor:'#7c3aed',
+      title:'Un moment de réflexion…',
+      msg:'Vous venez d\'évaluer l\'ensemble des sous-compétences au niveau « Totalement acquis ».\n\nNous souhaitons vous rappeler qu\'une seule période de stage ne permet généralement pas de valider toutes les compétences au niveau maximum.\n\nCertaines s\'acquièrent progressivement sur l\'ensemble du cursus (PFMP 1, 2 et 3). Une évaluation différenciée reflète mieux la réalité du parcours de l\'élève.\n\nMerci de prendre un moment pour reconsidérer certaines notations si nécessaire.',
+      buttons:[
+        {label:'Revoir mes notations',style:'modal-btn-pri',action:'closeModal()'},
+        {label:'Maintenir mes évaluations',style:'modal-btn-sec',action:'closeModal()'},
+      ]});
+  }
+}
+
+// ═══════════════════════════
+//  MODAL GÉNÉRIQUE
+// ═══════════════════════════
+function showModal({icon,stripeColor,title,msg,missing,buttons}){
+  document.getElementById('modalStripe').style.background=stripeColor||'var(--navy)';
+  document.getElementById('modalIcon').textContent=icon||'ℹ️';
+  document.getElementById('modalTitle').textContent=title||'';
+  document.getElementById('modalMsg').textContent=msg||'';
+  const ml=document.getElementById('modalMissing');
+  const mll=document.getElementById('modalMissingList');
+  if(missing&&missing.length>0){mll.innerHTML=missing.map(m=>`<li>${m}</li>`).join('');ml.style.display='block';}
+  else ml.style.display='none';
+  document.getElementById('modalBtns').innerHTML=(buttons||[]).map(b=>
+    `<button class="modal-btn ${b.style}" onclick="${b.action}">${b.label}</button>`).join('');
+  document.getElementById('modalBackdrop').classList.add('open');
+}
+function closeModal(){document.getElementById('modalBackdrop').classList.remove('open');}
+function modalBackdropClick(e){if(e.target===document.getElementById('modalBackdrop'))closeModal();}
+
+// ═══════════════════════════
+//  EMAIL MODAL
+// ═══════════════════════════
+function showEmailModal(){
+  const filename=makeFilename('pfmp');
+  const subject=`Livret PFMP – ${(S.eleveNom||'').toUpperCase()} ${S.elevePrenom||''} – ${S.elevePfmp||''}`.trim();
+  document.getElementById('emailFilename').textContent='('+filename+')';
+  document.getElementById('emailSubject').textContent=subject;
+  document.getElementById('step1check').style.display='none';
+  document.getElementById('copyBtn').classList.remove('copied');
+  document.getElementById('copyBtn').textContent='📋';
+  const mailto=`mailto:${DEST_EMAIL}?subject=${encodeURIComponent(subject)}&body=${encodeURIComponent(
+    `Bonjour,\n\nVeuillez trouver ci-joint le livret PFMP de ${S.elevePrenom||''} ${(S.eleveNom||'').toUpperCase()} (${S.eleveClasse||''} – ${S.elevePfmp||''}).\n\nFichier à joindre : ${filename}\n\nCordialement,\n${S.entTuteur||'Le tuteur'}\n${S.entNom||''}`)}`;
+  document.getElementById('mailtoLink').href=mailto;
+
+  document.getElementById('manualSendIntro').textContent=
+    'Pour finaliser l\'envoi de la notation, suivez ces deux étapes :';
+
+  document.getElementById('emailModal').classList.add('open');
+}
+function closeEmailModal(){document.getElementById('emailModal').classList.remove('open');}
+function emailModalBackdrop(e){if(e.target===document.getElementById('emailModal'))closeEmailModal();}
+function markStep1(){setTimeout(()=>{document.getElementById('step1check').style.display='block';},800);}
+function copyEmail(){
+  navigator.clipboard.writeText(DEST_EMAIL).then(()=>{
+    const btn=document.getElementById('copyBtn');
+    btn.textContent='✅';btn.classList.add('copied');
+    setTimeout(()=>{btn.textContent='📋';btn.classList.remove('copied');},2000);
+  }).catch(()=>toast('Copiez : '+DEST_EMAIL));
+}
+function copySubject(){
+  const s=document.getElementById('emailSubject').textContent;
+  navigator.clipboard.writeText(s).then(()=>toast('✅ Objet copié')).catch(()=>toast('Copiez l\'objet manuellement'));
+}
+function openMailto(e){setTimeout(()=>toast('⚠️ N\'oubliez pas de joindre le fichier .pfmp !',4000),400);}
+
+// ═══════════════════════════
+//  UTILS
+// ═══════════════════════════
+function esc(s){if(!s)return '';return String(s).replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;');}
+document.addEventListener('touchend',function(e){
+  if(e.target.closest('.rb,.att-cell,.comp-card,.cc-info,.act-chip,.btn,.btn-sm'))e.preventDefault();
+},{passive:false});
+
+// ═══════════════════════════
+//  INIT
+// ═══════════════════════════
+loadState();
+
+// App ready
+
+// Détection automatique du mode d'affichage (PC / tablette / smartphone)
+applyAutoMode();
+
+buildCompPages();
+refreshActivities();
+restoreFields();
+const _pages=getPages();
+updateHeader(_pages);
+updateSaveLabel();
+</script>
+</body>
+</html>
